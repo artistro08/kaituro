@@ -102,7 +102,7 @@ public sealed partial class MainWindow : Window
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico"));
         RestoreWindowBounds();
         AppWindow.Changed += OnAppWindowChanged;
-        _smoothResize      = new SmoothResize(this, Microsoft.UI.Win32Interop.GetWindowFromWindowId(AppWindow.Id));
+        _smoothResize      = new SmoothResize(this);
 
         // Copy
         ProfileArchived.Text    = ChatCopy.Archived;

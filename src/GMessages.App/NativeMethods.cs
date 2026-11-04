@@ -24,6 +24,7 @@ internal static class NativeMethods
     public const uint WM_ERASEBKGND    = 0x0014;
     public const uint WM_ENTERSIZEMOVE = 0x0231;
     public const uint WM_EXITSIZEMOVE  = 0x0232;
+    public const uint WM_NCDESTROY     = 0x0082;
     public const uint WM_APP           = 0x8000;
 
     public const uint NIM_ADD        = 0x00;
@@ -57,7 +58,7 @@ internal static class NativeMethods
 
     public const int GWL_STYLE          = -16;
     public const int GWL_EXSTYLE        = -20;
-    public const long WS_EX_COMPOSITED  = 0x02000000;
+    public const uint WS_EX_COMPOSITED  = 0x02000000;
     public const uint WS_POPUP          = 0x80000000;
     public const uint WS_CLIPSIBLINGS   = 0x04000000;
     public const uint WS_SYSMENU        = 0x00080000;
@@ -292,7 +293,7 @@ internal static class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     public static extern IntPtr SetWindowLongPtrW(IntPtr hwnd, int index, IntPtr value);
 
-    [DllImport("user32.dll", SetLastError = true)]
+    [DllImport("user32.dll")]
     public static extern IntPtr GetWindowLongPtrW(IntPtr hwnd, int index);
 
     [DllImport("user32.dll")]
@@ -323,6 +324,10 @@ internal static class NativeMethods
 
     [DllImport("comctl32.dll")]
     public static extern IntPtr DefSubclassProc(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("comctl32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool RemoveWindowSubclass(IntPtr hwnd, SubclassProc proc, UIntPtr id);
 
     [DllImport("gdi32.dll")]
     public static extern IntPtr GetStockObject(int index);
