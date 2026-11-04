@@ -46,6 +46,10 @@ public sealed partial class MainWindow : Window
     private readonly AppSettings _appSettings;
     private readonly AvatarCache _avatars;
 
+    // No Flicker While The Window Is Resized Or Moved (Kept Here, So Its Subclass Lives As Long As The Window)
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0052", Justification = "Holds the native subclass's delegate alive for the window's lifetime.")]
+    private readonly SmoothResize _smoothResize;
+
     // The Body (Pairing Or Chats, Never Both) And The Settings Page Over It While Open
     private PairingPage? _pairing;
     private ChatsView? _chats;
@@ -98,6 +102,7 @@ public sealed partial class MainWindow : Window
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets", "AppIcon.ico"));
         RestoreWindowBounds();
         AppWindow.Changed += OnAppWindowChanged;
+        _smoothResize      = new SmoothResize(this, Microsoft.UI.Win32Interop.GetWindowFromWindowId(AppWindow.Id));
 
         // Copy
         ProfileArchived.Text    = ChatCopy.Archived;
